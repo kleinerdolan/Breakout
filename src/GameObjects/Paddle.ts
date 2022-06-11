@@ -4,7 +4,8 @@ export class Paddle {
   public y: number = 0;
   private width: number = 150;
   private height: number = 30;
-  public speed: number = 10;
+  public currentSpeed: number = 0;
+  public SPEED: number = 20;
 
   constructor(private ctx: CanvasRenderingContext2D, private GAME_WIDTH: number, private GAME_HEIGHT: number) {
     this.x = this.GAME_WIDTH / 2;
@@ -13,19 +14,30 @@ export class Paddle {
 
   draw() {
     this.ctx.fillStyle = 'black';
+    this.move()
     this.ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
   }
 
-  moveLeft() {
-    if (this.x - this.width / 2 - this.speed > 0) {
-      this.x -= this.speed;
+  move() {
+    if (this.x - this.width / 2 + this.currentSpeed > 0 && this.x + this.width / 2 + this.currentSpeed < this.GAME_WIDTH) {
+      this.x += this.currentSpeed;
     }
   }
 
-  moveRight(gameWidth: number) {
-    if (this.x + this.width / 2 + this.speed < gameWidth) {
-      this.x += this.speed;
-    }
+  getTopEdge(): number {
+    return this.y;
+  }
+
+  getBottomEdge(): number {
+    return this.y + this.height;
+  }
+
+  getRightEdge(): number {
+    return this.x + this.width;
+  }
+
+  getLeftEdge(): number {
+    return this.x;
   }
 
 }
