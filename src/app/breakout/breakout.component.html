@@ -1,4 +1,6 @@
 <h1 class="center">Breakout</h1>
-<app-canvas [score]="score" (scoreChange)="updateScore($event)" (streakChange)="updateStreak($event)" class="main-container center"></app-canvas>
-<h1 class="center">Score: {{score}}</h1>
+<app-canvas *ngIf="!gameOver" [score]="score" (scoreChange)="updateScore($event)" (streakChange)="updateStreak($event)" (gameWon)="endGame($event)" class="main-container center"></app-canvas>
+<h1 *ngIf="!gameOver" class="center">Score: {{score}}</h1>
+<h1 *ngIf="gameWon" class="center">You won! Final Score: {{score}}</h1>
+<h1 *ngIf="gameLost" class="center">Game Over Final Score: {{score}}</h1>
 <h1 *ngIf="isStreak" class="center">Bonus-Streak: {{bonusStreak}}</h1>

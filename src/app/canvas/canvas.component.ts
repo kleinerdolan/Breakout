@@ -13,12 +13,16 @@ export class CanvasComponent implements OnInit {
   @Input() score: number = 0;
   @Output() scoreChange : EventEmitter<number> = new EventEmitter();
   @Output() streakChange : EventEmitter<number> = new EventEmitter();
+  @Output() gameWon : EventEmitter<boolean> = new EventEmitter();
   bonusStreak = 0;
   bonusWindow = 0;
-  BONUS_WINDOW_SIZE = 60;
+  gameOver: boolean = false;
+  win: boolean = false;
 
+  BONUS_WINDOW_SIZE = 60;
   GAME_WIDTH = 1080;
   GAME_HEIGHT = 720;
+  LIVES = 3;
 
   collisionCooldown = 0;
 
@@ -61,10 +65,15 @@ export class CanvasComponent implements OnInit {
   animate(): void {
     this.ctx.clearRect(0, 0, this.GAME_WIDTH, this.GAME_HEIGHT);
     this.checkForCollisions();
+    this.drawLives();
     this.bricks.forEach(brick => brick.draw());
-    this.ball.draw()
-    this.paddle.draw()
+    this.ball.draw();
+    this.paddle.draw();
     this.updateStreak();
+    if (this.gameOver) {
+      this.gameWon.emit(this.win);
+      return;
+    }
     window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -82,8 +91,13 @@ export class CanvasComponent implements OnInit {
       this.ball.ySpeed = this.ball.ySpeed * -1;
     }
     if (this.ball.getBottomEdge() + this.ball.ySpeed > this.GAME_HEIGHT) {
-      //reset ball, if it leaves via the bottom edge
+      //reset the ball and remove one live, if it leaves via the bottom edge
       this.ball = new Ball(this.ctx, this.GAME_WIDTH, this.GAME_HEIGHT);
+      this.LIVES--;
+      if (this.LIVES === 0) {
+        this.gameOver = true;
+        this.win = false;
+      }
     }
   }
 
@@ -154,6 +168,10 @@ export class CanvasComponent implements OnInit {
         }
       }
     });
+    if (this.bricks.length === 0) {
+      this.gameOver = true;
+      this.win = true;
+    }
   }
 
   //generate 8x6 bricks, each row has less hitpoints
@@ -161,7 +179,7 @@ export class CanvasComponent implements OnInit {
     const bricks: Brick[] = [];
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 8; j++) {
-        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 5 - i))
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 5 - i));
       }
     }
     return bricks;
@@ -185,6 +203,20 @@ export class CanvasComponent implements OnInit {
     } else {
       this.bonusStreak = 0;
       this.streakChange.emit(this.bonusStreak);
+    }
+  }
+
+  drawLives(): void {
+    for (let i = 0; i < this.LIVES; i++) {
+      const radius = 10;
+
+      this.ctx.beginPath();
+      this.ctx.arc(this.GAME_WIDTH - i * 30 - 15, 15, radius, 0, 2 * Math.PI, false);
+      this.ctx.fillStyle = 'green';
+      this.ctx.fill();
+      this.ctx.lineWidth = 5;
+      this.ctx.strokeStyle = '#003300';
+      this.ctx.stroke();
     }
   }
 }
