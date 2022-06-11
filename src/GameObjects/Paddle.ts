@@ -13,7 +13,7 @@ export class Paddle {
   }
 
   draw() {
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = '#B4772F';
     this.move()
     this.ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
   }
@@ -33,11 +33,11 @@ export class Paddle {
   }
 
   getRightEdge(): number {
-    return this.x + this.width;
+    return this.x + this.width / 2;
   }
 
   getLeftEdge(): number {
-    return this.x;
+    return this.x - this.width / 2;
   }
 
 }

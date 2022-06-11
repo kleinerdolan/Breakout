@@ -1,6 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {Paddle} from "../../GameObjects/Paddle";
 import {Ball} from "../../GameObjects/Ball";
+import {Brick} from "../../GameObjects/Brick";
 
 @Component({
   selector: 'app-canvas',
@@ -9,17 +10,18 @@ import {Ball} from "../../GameObjects/Ball";
 })
 export class CanvasComponent implements OnInit {
 
-  GAME_WIDTH = 800;
-  GAME_HEIGHT = 600;
+  GAME_WIDTH = 1080;
+  GAME_HEIGHT = 720;
 
   collisionCooldown = 0;
 
-  @ViewChild('canvas', { static: true })
+  @ViewChild('canvas', {static: true})
   canvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
 
   paddle!: Paddle;
   ball!: Ball;
+  bricks: Brick[] = [];
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -38,26 +40,30 @@ export class CanvasComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
-    this.paddle = new Paddle(this.ctx, this.GAME_WIDTH,  this.GAME_HEIGHT);
+    this.paddle = new Paddle(this.ctx, this.GAME_WIDTH, this.GAME_HEIGHT);
     this.ball = new Ball(this.ctx, this.GAME_WIDTH, this.GAME_HEIGHT);
+    this.bricks = this.generateBricks();
     this.animate();
   }
 
   animate(): void {
     this.ctx.clearRect(0, 0, this.GAME_WIDTH, this.GAME_HEIGHT);
-    this.paddle.draw()
-    this.ball.draw()
     this.checkForCollisions();
+    this.bricks.forEach(brick => brick.draw());
+    this.ball.draw()
+    this.paddle.draw()
     window.requestAnimationFrame(this.animate.bind(this));
   }
 
   checkForCollisions(): void {
     this.checkBallInBounds();
     this.checkBallHitsPaddle();
+    this.checkBallHitsBrick();
   }
 
   checkBallInBounds(): void {
@@ -84,23 +90,69 @@ export class CanvasComponent implements OnInit {
       if (this.ball.getRightEdge() > this.paddle.getLeftEdge() && this.ball.getLeftEdge() > this.paddle.getLeftEdge() && this.ball.getLeftEdge() < this.paddle.getRightEdge() && this.ball.getRightEdge() < this.paddle.getRightEdge()) {
         this.ball.ySpeed = this.ball.ySpeed * -1;
         this.collisionCooldown = 0;
-        console.log('top-collision')
         //left side collision
       } else if (this.ball.getRightEdge() > this.paddle.getLeftEdge() && this.ball.getLeftEdge() < this.paddle.getLeftEdge() && this.ball.getLeftEdge() < this.paddle.getLeftEdge()) {
         this.ball.ySpeed = this.ball.ySpeed * -1;
         this.ball.xSpeed = this.ball.xSpeed * -1;
         this.ball.speedBoost();
         this.collisionCooldown = 0;
-        console.log('left-collision')
         //right side collision
       } else if (this.ball.getLeftEdge() < this.paddle.getRightEdge() && this.ball.getRightEdge() > this.paddle.getRightEdge() && this.ball.getRightEdge() > this.paddle.getRightEdge()) {
         this.ball.ySpeed = this.ball.ySpeed * -1;
         this.ball.xSpeed = this.ball.xSpeed * -1;
         this.ball.speedBoost();
         this.collisionCooldown = 0;
-        console.log('right-collision')
       }
     }
+  }
+
+  checkBallHitsBrick(): void {
+    this.bricks.forEach((brick, index) => {
+      //top collision
+      if (brick.getLeftEdge() < this.ball.getLeftEdge() && brick.getRightEdge() > this.ball.getLeftEdge() && brick.getTopEdge() < this.ball.getBottomEdge() && brick.getTopEdge() > this.ball.getTopEdge()) {
+        this.ball.ySpeed = this.ball.ySpeed * -1;
+        this.collisionCooldown = 0;
+        brick.hitpoints -= 1;
+        if (brick.hitpoints <= 0) {
+          this.bricks.splice(index, 1);
+        }
+        //bottom collision
+      } else if (brick.getLeftEdge() < this.ball.getLeftEdge() && brick.getRightEdge() > this.ball.getLeftEdge() && brick.getBottomEdge() > this.ball.getTopEdge() && brick.getBottomEdge() < this.ball.getBottomEdge()) {
+        this.ball.ySpeed = this.ball.ySpeed * -1;
+        this.collisionCooldown = 0;
+        brick.hitpoints -= 1;
+        if (brick.hitpoints <= 0) {
+          this.bricks.splice(index, 1);
+        }
+        //right collision
+      } else if (brick.getTopEdge() < this.ball.getTopEdge() && brick.getBottomEdge() > this.ball.getBottomEdge() && brick.getRightEdge() > this.ball.getLeftEdge() && brick.getLeftEdge() < this.ball.getLeftEdge()) {
+        this.ball.xSpeed = this.ball.xSpeed * -1;
+        this.collisionCooldown = 0;
+        brick.hitpoints -= 1;
+        if (brick.hitpoints <= 0) {
+          this.bricks.splice(index, 1);
+        }
+        //left collision
+      } else if (brick.getTopEdge() < this.ball.getTopEdge() && brick.getBottomEdge() > this.ball.getBottomEdge() && brick.getLeftEdge() < this.ball.getRightEdge() && brick.getRightEdge() > this.ball.getRightEdge()) {
+        this.ball.xSpeed = this.ball.xSpeed * -1;
+        this.collisionCooldown = 0;
+        brick.hitpoints -= 1;
+        if (brick.hitpoints <= 0) {
+          this.bricks.splice(index, 1);
+        }
+      }
+    });
+  }
+
+  //generate 5x4 bricks, each row has less hitpoints
+  generateBricks(): Brick[] {
+    const bricks: Brick[] = [];
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 8; j++) {
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8 * j + 70, this.GAME_HEIGHT / 2 / 5 * i + 30, 5 - i))
+      }
+    }
+    return bricks;
   }
 
 }

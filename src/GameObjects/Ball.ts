@@ -2,8 +2,8 @@ export class Ball {
 
   public x: number = 0;
   public y: number = 0;
-  private width: number = 10;
-  private height: number = 10;
+  public width: number = 10;
+  public height: number = 10;
   public xSpeed: number = 0;
   public ySpeed: number = 0;
   private speedBoosterTimer = 0;
@@ -11,8 +11,8 @@ export class Ball {
   constructor(private ctx: CanvasRenderingContext2D, private GAME_WIDTH: number, private GAME_HEIGHT: number) {
     this.x = this.GAME_WIDTH / 2;
     this.y = this.GAME_HEIGHT / 2;
-    this.xSpeed = 3;
-    this.ySpeed = 3;
+    this.xSpeed = 4;
+    this.ySpeed = 4;
   }
 
   getBottomEdge(): number {
@@ -24,15 +24,15 @@ export class Ball {
   }
 
   getRightEdge(): number {
-    return this.x + this.width;
+    return this.x + this.width / 2;
   }
 
   getLeftEdge(): number {
-    return this.x;
+    return this.x - this.width / 2;
   }
 
   draw() {
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = '#F9C26B';
     this.move();
     this.ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
   }
@@ -49,7 +49,7 @@ export class Ball {
   }
 
   speedBoost(): void {
-    this.speedBoosterTimer = 10;
+    this.speedBoosterTimer = 30;
   }
 
 }
