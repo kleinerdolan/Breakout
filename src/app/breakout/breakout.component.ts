@@ -13,17 +13,20 @@ export class BreakoutComponent implements OnInit {
   gameOver: boolean = true;
   gameWon: boolean = false;
   gameLost: boolean = false;
+  mapSelectionMode: boolean = false;
+  maps: string[] = ['Default', 'Block']
+  mapChoice: string = '';
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  updateScore(newScore: number) {
+  updateScore(newScore: number): void {
     this.score = newScore;
   }
 
-  updateStreak(streak: number) {
+  updateStreak(streak: number): void {
     if (streak === 0) {
       this.isStreak = false;
     } else {
@@ -42,7 +45,13 @@ export class BreakoutComponent implements OnInit {
     }
   }
 
-  startGame() {
+  openMapSelection(): void {
+    this.mapSelectionMode = true;
+  }
+
+  startGame(mapChoice: number): void {
+    this.mapChoice = this.maps[mapChoice];
     this.gameOver = false;
+    this.mapSelectionMode = false;
   }
 }

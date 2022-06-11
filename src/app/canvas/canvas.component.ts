@@ -11,9 +11,10 @@ import {Brick} from "../../GameObjects/Brick";
 export class CanvasComponent implements OnInit {
 
   @Input() score: number = 0;
-  @Output() scoreChange : EventEmitter<number> = new EventEmitter();
-  @Output() streakChange : EventEmitter<number> = new EventEmitter();
-  @Output() gameWon : EventEmitter<boolean> = new EventEmitter();
+  @Output() scoreChange: EventEmitter<number> = new EventEmitter();
+  @Output() streakChange: EventEmitter<number> = new EventEmitter();
+  @Output() gameWon: EventEmitter<boolean> = new EventEmitter();
+  @Input() mapChoice: string = '';
   bonusStreak = 0;
   bonusWindow = 0;
   gameOver: boolean = false;
@@ -176,19 +177,21 @@ export class CanvasComponent implements OnInit {
 
   //generate 8x6 bricks, each row has less hitpoints
   generateBricks(): Brick[] {
-    const bricks: Brick[] = [];
-    for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < 8; j++) {
-        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 5 - i));
-      }
+    console.log('mapChoice: ' + this.mapChoice)
+    switch (this.mapChoice) {
+      case 'Default':
+        return this.defaultLayout();
+      case 'Block':
+        return this.blockLayout();
+      default:
+        return this.defaultLayout();
     }
-    return bricks;
   }
 
   scoreBonus(num: number): void {
     if (this.bonusWindow > 0) {
       this.score += num * 2;
-      this.bonusStreak ++;
+      this.bonusStreak++;
       this.streakChange.emit(this.bonusStreak);
     } else {
       this.score += num;
@@ -215,5 +218,25 @@ export class CanvasComponent implements OnInit {
       this.ctx.fillStyle = 'green';
       this.ctx.fill();
     }
+  }
+
+  defaultLayout(): Brick[] {
+    const bricks: Brick[] = [];
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 8; j++) {
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 5 - i));
+      }
+    }
+    return bricks;
+  }
+
+  blockLayout(): Brick[] {
+    const bricks: Brick[] = [];
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 9; j++) {
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 10 * j + 110, this.GAME_HEIGHT / 2 / 8 * i + 40, 5 - i));
+      }
+    }
+    return bricks;
   }
 }

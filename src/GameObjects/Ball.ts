@@ -13,7 +13,7 @@ export class Ball {
 
   constructor(private ctx: CanvasRenderingContext2D, private GAME_WIDTH: number, private GAME_HEIGHT: number) {
     this.x = this.GAME_WIDTH / 2;
-    this.y = this.GAME_HEIGHT / 2;
+    this.y = this.GAME_HEIGHT / 3 * 2;
     this.xSpeed = Math.floor(Math.random() * (this.MAX_SPEED - this.MIN_SPEED + 1)) + this.MIN_SPEED;
     this.ySpeed = Math.floor(Math.random() * (this.MAX_SPEED - this.MIN_SPEED + 1)) + this.MIN_SPEED;
     if (Math.random() < 0.5) {
