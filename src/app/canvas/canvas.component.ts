@@ -208,15 +208,12 @@ export class CanvasComponent implements OnInit {
 
   drawLives(): void {
     for (let i = 0; i < this.LIVES; i++) {
-      const radius = 10;
+      const radius = 8;
 
       this.ctx.beginPath();
       this.ctx.arc(this.GAME_WIDTH - i * 30 - 15, 15, radius, 0, 2 * Math.PI, false);
       this.ctx.fillStyle = 'green';
       this.ctx.fill();
-      this.ctx.lineWidth = 5;
-      this.ctx.strokeStyle = '#003300';
-      this.ctx.stroke();
     }
   }
 }

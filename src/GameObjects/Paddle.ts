@@ -3,7 +3,7 @@ export class Paddle {
   public x: number = 0;
   public y: number = 0;
   private width: number = 150;
-  private height: number = 30;
+  private height: number = 10;
   public currentSpeed: number = 0;
   public SPEED: number = 20;
 
@@ -15,7 +15,12 @@ export class Paddle {
   draw() {
     this.ctx.fillStyle = '#B4772F';
     this.move()
+    this.ctx.shadowColor = 'black';
+    this.ctx.shadowBlur = 4;
+    this.ctx.shadowOffsetX = 3;
+    this.ctx.shadowOffsetY = 3;
     this.ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
+    this.ctx.shadowColor='rgba(0,0,0,0)';
   }
 
   move() {

@@ -14,7 +14,12 @@ export class Brick {
 
   draw() {
     this.ctx.fillStyle = this.getColor();
+    this.ctx.shadowColor = 'black';
+    this.ctx.shadowBlur = 3;
+    this.ctx.shadowOffsetX = 2;
+    this.ctx.shadowOffsetY = 2;
     this.ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
+    this.ctx.shadowColor='rgba(0,0,0,0)';
   }
 
   getColor(): string {

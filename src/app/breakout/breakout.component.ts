@@ -10,7 +10,7 @@ export class BreakoutComponent implements OnInit {
   score: number = 0;
   isStreak: boolean = false;
   bonusStreak: string = '';
-  gameOver: boolean = false;
+  gameOver: boolean = true;
   gameWon: boolean = false;
   gameLost: boolean = false;
 
@@ -40,5 +40,9 @@ export class BreakoutComponent implements OnInit {
     } else {
       this.gameLost = true;
     }
+  }
+
+  startGame() {
+    this.gameOver = false;
   }
 }

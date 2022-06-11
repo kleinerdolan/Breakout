@@ -1,5 +1,8 @@
 export class Ball {
 
+  MIN_SPEED = 4;
+  MAX_SPEED = 7;
+
   public x: number = 0;
   public y: number = 0;
   public width: number = 10;
@@ -11,8 +14,11 @@ export class Ball {
   constructor(private ctx: CanvasRenderingContext2D, private GAME_WIDTH: number, private GAME_HEIGHT: number) {
     this.x = this.GAME_WIDTH / 2;
     this.y = this.GAME_HEIGHT / 2;
-    this.xSpeed = 4;
-    this.ySpeed = 4;
+    this.xSpeed = Math.floor(Math.random() * (this.MAX_SPEED - this.MIN_SPEED + 1)) + this.MIN_SPEED;
+    this.ySpeed = Math.floor(Math.random() * (this.MAX_SPEED - this.MIN_SPEED + 1)) + this.MIN_SPEED;
+    if (Math.random() < 0.5) {
+      this.xSpeed *= -1;
+    }
   }
 
   getBottomEdge(): number {

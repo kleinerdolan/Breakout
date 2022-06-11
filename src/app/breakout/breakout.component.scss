@@ -19,3 +19,19 @@ h1 {
   display: flex;
   justify-content: center;
 }
+
+button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+  color: #181818;
+  background: #008CBA;
+  border-radius: 8px;
+  border: none;
+  padding: 16px;
+  transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: #00AABA;
+  color: white;
+}

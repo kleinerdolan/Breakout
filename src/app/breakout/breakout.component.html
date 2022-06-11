@@ -3,4 +3,5 @@
 <h1 *ngIf="!gameOver" class="center">Score: {{score}}</h1>
 <h1 *ngIf="gameWon" class="center">You won! Final Score: {{score}}</h1>
 <h1 *ngIf="gameLost" class="center">Game Over Final Score: {{score}}</h1>
-<h1 *ngIf="isStreak" class="center">Bonus-Streak: {{bonusStreak}}</h1>
+<h1 *ngIf="isStreak && !gameOver" class="center">Bonus-Streak: {{bonusStreak}}</h1>
+<div class="center" *ngIf="gameOver"><button (click)="startGame()">Start Game</button></div>
