@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Paddle} from "../../GameObjects/Paddle";
 import {Ball} from "../../GameObjects/Ball";
 import {Brick} from "../../GameObjects/Brick";
@@ -9,6 +9,13 @@ import {Brick} from "../../GameObjects/Brick";
   styleUrls: ['./canvas.component.scss']
 })
 export class CanvasComponent implements OnInit {
+
+  @Input() score: number = 0;
+  @Output() scoreChange : EventEmitter<number> = new EventEmitter();
+  @Output() streakChange : EventEmitter<number> = new EventEmitter();
+  bonusStreak = 0;
+  bonusWindow = 0;
+  BONUS_WINDOW_SIZE = 60;
 
   GAME_WIDTH = 1080;
   GAME_HEIGHT = 720;
@@ -57,6 +64,7 @@ export class CanvasComponent implements OnInit {
     this.bricks.forEach(brick => brick.draw());
     this.ball.draw()
     this.paddle.draw()
+    this.updateStreak();
     window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -113,6 +121,7 @@ export class CanvasComponent implements OnInit {
         this.ball.ySpeed = this.ball.ySpeed * -1;
         this.collisionCooldown = 0;
         brick.hitpoints -= 1;
+        this.scoreBonus(10);
         if (brick.hitpoints <= 0) {
           this.bricks.splice(index, 1);
         }
@@ -121,6 +130,7 @@ export class CanvasComponent implements OnInit {
         this.ball.ySpeed = this.ball.ySpeed * -1;
         this.collisionCooldown = 0;
         brick.hitpoints -= 1;
+        this.scoreBonus(10);
         if (brick.hitpoints <= 0) {
           this.bricks.splice(index, 1);
         }
@@ -129,6 +139,7 @@ export class CanvasComponent implements OnInit {
         this.ball.xSpeed = this.ball.xSpeed * -1;
         this.collisionCooldown = 0;
         brick.hitpoints -= 1;
+        this.scoreBonus(10);
         if (brick.hitpoints <= 0) {
           this.bricks.splice(index, 1);
         }
@@ -137,6 +148,7 @@ export class CanvasComponent implements OnInit {
         this.ball.xSpeed = this.ball.xSpeed * -1;
         this.collisionCooldown = 0;
         brick.hitpoints -= 1;
+        this.scoreBonus(10);
         if (brick.hitpoints <= 0) {
           this.bricks.splice(index, 1);
         }
@@ -149,10 +161,30 @@ export class CanvasComponent implements OnInit {
     const bricks: Brick[] = [];
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 8; j++) {
-        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8 * j + 70, this.GAME_HEIGHT / 2 / 7 * i + 30, 5 - i))
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 5 - i))
       }
     }
     return bricks;
   }
 
+  scoreBonus(num: number): void {
+    if (this.bonusWindow > 0) {
+      this.score += num * 2;
+      this.bonusStreak ++;
+      this.streakChange.emit(this.bonusStreak);
+    } else {
+      this.score += num;
+    }
+    this.bonusWindow = this.BONUS_WINDOW_SIZE;
+    this.scoreChange.emit(this.score);
+  }
+
+  updateStreak(): void {
+    if (this.bonusWindow > 0) {
+      this.bonusWindow--;
+    } else {
+      this.bonusStreak = 0;
+      this.streakChange.emit(this.bonusStreak);
+    }
+  }
 }
