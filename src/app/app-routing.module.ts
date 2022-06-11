@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {CanvasComponent} from "./canvas/canvas.component";
+import {BreakoutComponent} from "./breakout/breakout.component";
 
 const routes: Routes = [
-  { path: 'breakout', component: CanvasComponent }
+  { path: '', component: BreakoutComponent }
 ];
 
 @NgModule({

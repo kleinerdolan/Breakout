@@ -144,12 +144,12 @@ export class CanvasComponent implements OnInit {
     });
   }
 
-  //generate 5x4 bricks, each row has less hitpoints
+  //generate 8x6 bricks, each row has less hitpoints
   generateBricks(): Brick[] {
     const bricks: Brick[] = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 8; j++) {
-        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8 * j + 70, this.GAME_HEIGHT / 2 / 5 * i + 30, 5 - i))
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8 * j + 70, this.GAME_HEIGHT / 2 / 7 * i + 30, 5 - i))
       }
     }
     return bricks;

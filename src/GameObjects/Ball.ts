@@ -32,7 +32,7 @@ export class Ball {
   }
 
   draw() {
-    this.ctx.fillStyle = '#F9C26B';
+    this.ctx.fillStyle = '#EE4D2E';
     this.move();
     this.ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
   }
