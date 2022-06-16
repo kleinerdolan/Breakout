@@ -6,7 +6,7 @@
 <h1 *ngIf="gameLost && gameOver && !mapSelectionMode" class="center">Game Over Final Score: {{score}}</h1>
 <h1 *ngIf="isStreak && !gameOver" class="center">Bonus-Streak: {{bonusStreak}}</h1>
 <div class="center" *ngIf="gameOver && !mapSelectionMode">
-  <button (click)="openMapSelection()" autofocus>Start Game</button>
+  <button (click)="openMapSelection()">Start Game</button>
 </div>
 <app-map-selection class="center" *ngIf="mapSelectionMode && gameOver"
                    (mapSelected)="startGame($event)"></app-map-selection>

@@ -24,16 +24,22 @@ export class Brick {
 
   getColor(): string {
     switch (this.hitpoints) {
+      case 8:
+        return '#182DF5';
+      case 7:
+        return '#B818F5';
+      case 6:
+        return '#F50C0E';
       case 5:
-        return '#EF4537';
+        return '#F5720C';
       case 4:
-        return '#579242';
+        return '#F6C000';
       case 3:
-        return '#049E9C';
+        return '#B3F518';
       case 2:
-        return '#9876AA';
+        return '#18F556';
       case 1:
-        return '#AFB1B3';
+        return '#18DAF5';
       default:
         return 'white';
     }

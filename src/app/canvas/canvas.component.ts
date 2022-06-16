@@ -240,7 +240,7 @@ export class CanvasComponent implements OnInit {
     const bricks: Brick[] = [];
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 8; j++) {
-        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 5 - i));
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 8.5 * j + 110, this.GAME_HEIGHT / 2 / 7 * i + 40, 6 - i));
       }
     }
     return bricks;
@@ -250,7 +250,7 @@ export class CanvasComponent implements OnInit {
     const bricks: Brick[] = [];
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 9; j++) {
-        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 10 * j + 110, this.GAME_HEIGHT / 2 / 8 * i + 40, 5 - i));
+        bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 10 * j + 110, this.GAME_HEIGHT / 2 / 8 * i + 40, 8 - i));
       }
     }
     return bricks;
