@@ -5,12 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { BreakoutComponent } from './breakout/breakout.component';
+import { MapSelectionComponent } from './map-selection/map-selection.component';
+import { MapCardComponent } from './map-selection/map-card/map-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CanvasComponent,
-    BreakoutComponent
+    BreakoutComponent,
+    MapSelectionComponent,
+    MapCardComponent
   ],
   imports: [
     BrowserModule,

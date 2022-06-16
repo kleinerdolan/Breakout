@@ -50,6 +50,7 @@ export class BreakoutComponent implements OnInit {
   }
 
   startGame(mapChoice: number): void {
+    this.score = 0;
     this.mapChoice = this.maps[mapChoice];
     this.gameOver = false;
     this.mapSelectionMode = false;

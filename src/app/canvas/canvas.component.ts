@@ -24,6 +24,7 @@ export class CanvasComponent implements OnInit {
   GAME_WIDTH = 1080;
   GAME_HEIGHT = 720;
   LIVES = 3;
+  gameStartCountdown = 4000;
 
   collisionCooldown = 0;
 
@@ -65,9 +66,14 @@ export class CanvasComponent implements OnInit {
 
   animate(): void {
     this.ctx.clearRect(0, 0, this.GAME_WIDTH, this.GAME_HEIGHT);
-    this.checkForCollisions();
     this.drawLives();
     this.bricks.forEach(brick => brick.draw());
+    if (Math.floor(this.gameStartCountdown / 1000) > 0) {
+      this.drawCountdown();
+      window.requestAnimationFrame(this.animate.bind(this));
+      return;
+    }
+    this.checkForCollisions();
     this.ball.draw();
     this.paddle.draw();
     this.updateStreak();
@@ -76,6 +82,16 @@ export class CanvasComponent implements OnInit {
       return;
     }
     window.requestAnimationFrame(this.animate.bind(this));
+  }
+
+  drawCountdown(): void {
+    this.ctx.strokeStyle = 'black';
+    this.ctx.lineWidth = 6;
+    this.ctx.strokeText('' + Math.floor(this.gameStartCountdown / 1000), this.GAME_WIDTH / 2, this.GAME_HEIGHT / 2);
+    this.ctx.fillStyle = "white";
+    this.ctx.font = "70px 'Roboto', sans-serif";
+    this.ctx.fillText('' + Math.floor(this.gameStartCountdown / 1000), this.GAME_WIDTH / 2, this.GAME_HEIGHT / 2);
+    this.gameStartCountdown -= 20;
   }
 
   checkForCollisions(): void {
