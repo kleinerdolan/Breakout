@@ -193,14 +193,15 @@ export class CanvasComponent implements OnInit {
 
   //generate 8x6 bricks, each row has less hitpoints
   generateBricks(): Brick[] {
-    console.log('mapChoice: ' + this.mapChoice)
     switch (this.mapChoice) {
-      case 'Default':
-        return this.defaultLayout();
+      case 'Easy':
+        return this.generateEasyLayout();
       case 'Block':
-        return this.blockLayout();
+        return this.generateBlockLayout();
+      case 'Classic':
+        return this.generateClassicLayout();
       default:
-        return this.defaultLayout();
+        return this.generateEasyLayout();
     }
   }
 
@@ -236,7 +237,7 @@ export class CanvasComponent implements OnInit {
     }
   }
 
-  defaultLayout(): Brick[] {
+  generateEasyLayout(): Brick[] {
     const bricks: Brick[] = [];
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 8; j++) {
@@ -246,11 +247,21 @@ export class CanvasComponent implements OnInit {
     return bricks;
   }
 
-  blockLayout(): Brick[] {
+  generateBlockLayout(): Brick[] {
     const bricks: Brick[] = [];
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 9; j++) {
         bricks.push(new Brick(this.ctx, this.GAME_WIDTH / 10 * j + 110, this.GAME_HEIGHT / 2 / 8 * i + 40, 8 - i));
+      }
+    }
+    return bricks;
+  }
+
+  generateClassicLayout(): Brick[] {
+    const bricks: Brick[] = [];
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 10; j++) {
+        bricks.push(new Brick(this.ctx,  100 * j + 90, 30 * i, 6 - i));
       }
     }
     return bricks;

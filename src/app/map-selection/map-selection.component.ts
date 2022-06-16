@@ -48,7 +48,7 @@ export class MapSelectionComponent implements OnInit {
   }
 
   initMaps() {
-    this.maps.push(new Map('Default', 0, '/assets/maps/map_default.png'), new Map('Block', 1, '/assets/maps/map_block.png'))
+    this.maps.push(new Map('Easy', 0, '/assets/maps/map_easy.png'), new Map('Block', 1, '/assets/maps/map_block.png'), new Map('Classic', 2, '/assets/maps/map_classic.png'))
   }
 
   selectMap(map: Map) {

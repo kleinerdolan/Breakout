@@ -14,7 +14,7 @@ export class BreakoutComponent implements OnInit {
   gameWon: boolean = false;
   gameLost: boolean = false;
   mapSelectionMode: boolean = false;
-  maps: string[] = ['Default', 'Block']
+  maps: string[] = ['Easy', 'Block', 'Classic'];
   mapChoice: string = '';
 
   constructor() { }
